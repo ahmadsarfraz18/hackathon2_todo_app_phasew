@@ -5,6 +5,7 @@ A simple, user-friendly CLI for managing your tasks.
 """
 
 import sys
+import shlex
 from colorama import Fore, Style, init
 from src.models.task import Task, TaskStatus
 from src.services.task_store import TaskStore
@@ -60,14 +61,15 @@ def cmd_add(args: list[str], store: TaskStore) -> None:
     if not args:
         print(f"{Fore.RED}Error: Missing task title{Style.RESET_ALL}")
         print(f"{Fore.WHITE}Usage: {Fore.GREEN}add{Style.RESET_ALL} <title> [description]")
-        print(f"{Fore.LIGHTBLACK_EX}Example: add \"Buy Groceries\" Get milk and eggs{Style.RESET_ALL}")
+        print(f"{Fore.LIGHTBLACK_EX}Example: add \"Buy Groceries\" \"Get milk and eggs\"{Style.RESET_ALL}")
         return
 
-    title = args[0]
-    description = " ".join(args[1:]) if len(args) > 1 else ""
+    # shlex.split() already removes quotes, but strip any remaining whitespace
+    title = args[0].strip()
+    description = " ".join(args[1:]).strip() if len(args) > 1 else ""
 
     # Validate title
-    if not title.strip():
+    if not title:
         print(f"{Fore.RED}Error: Task title cannot be empty{Style.RESET_ALL}")
         return
 
@@ -247,7 +249,13 @@ def main() -> int:
                 if not line:
                     continue
 
-            parts = line.split()
+            try:
+                parts = shlex.split(line)
+            except ValueError as e:
+                print(f"{Fore.RED}Error: Invalid quotes in command - {e}{Style.RESET_ALL}")
+                print(f"{Fore.LIGHTBLACK_EX}Make sure all quotes are properly closed.{Style.RESET_ALL}\n")
+                continue
+
             cmd = parts[0].lower()
             args = parts[1:]
 
