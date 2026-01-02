@@ -1,0 +1,22 @@
+[project]
+name = "todo-app"
+version = "0.1.0"
+description = "Evolution of Todo - Phase I: In-Memory Python Console App"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+todo = "main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]

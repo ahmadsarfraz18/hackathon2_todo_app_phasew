@@ -1,0 +1,14 @@
+# Evolution of Todo - Phase I: In-Memory Python Console App
+#
+# This project uses Python standard library ONLY.
+# No external dependencies required.
+#
+# For development/testing (optional):
+# pytest>=7.0.0
+# pytest-cov>=4.0.0
+#
+# Phase I Constraints:
+# - No file I/O
+# - No database
+# - No external dependencies
+# - Python 3.13+ stdlib only
